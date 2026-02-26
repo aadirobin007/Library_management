@@ -4,28 +4,29 @@ include('../db/config.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    // 1️⃣ Get form values
     $username = mysqli_real_escape_string($conn, $_POST['username']);
     $password = mysqli_real_escape_string($conn, $_POST['password']);
 
-    // 2️⃣ Check credentials
     $sql = "SELECT * FROM users 
             WHERE username='$username' 
             AND password='$password'";
 
     $result = mysqli_query($conn, $sql);
 
-    // 3️⃣ If user exists
     if (mysqli_num_rows($result) == 1) {
 
         $row = mysqli_fetch_assoc($result);
         $category = $row['category'];
 
-        // 4️⃣ Store session
+        // Store session
         $_SESSION['username'] = $row['username'];
         $_SESSION['category'] = $category;
 
-        // 5️⃣ Redirect based on role
+        // 🔔 Promotion message (ACCEPT / REJECT)
+        $_SESSION['promotion_message'] = $row['promotion_message'];
+        $_SESSION['promotion_status']  = $row['promotion_status'];
+
+        // Redirect
         if ($category === "Teacher" || $category === "Teacher_Admin") {
             header("Location: tdashboard.php");
             exit();

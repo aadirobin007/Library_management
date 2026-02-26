@@ -1,6 +1,8 @@
 <?php
 session_start();
+require '../db/config.php';
 
+/* 🔐 ACCESS CONTROL */
 if (
     !isset($_SESSION['username']) ||
     ($_SESSION['category'] !== 'Teacher' && $_SESSION['category'] !== 'Teacher_Admin')
@@ -9,14 +11,40 @@ if (
     exit();
 }
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
+    <title>Teacher Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="../css/style.css">
-    <title>Teacher Dashboard</title>
 </head>
 <body>
+
+<?php
+/* 🔔 PROMOTION MESSAGE */
+if (!empty($_SESSION['promotion_message'])) {
+
+    $bg    = $_SESSION['promotion_status'] === 'approved' ? '#e6ffea' : '#ffecec';
+    $color = $_SESSION['promotion_status'] === 'approved' ? '#006400' : '#900';
+
+    echo "<div style='background:$bg;color:$color;padding:10px;margin:10px;text-align:center;'>
+            {$_SESSION['promotion_message']}
+          </div>";
+
+    // Clear message from DB (show once)
+    $stmt = $conn->prepare(
+        "UPDATE users 
+         SET promotion_message=NULL, promotion_status=NULL 
+         WHERE username=?"
+    );
+    $stmt->bind_param("s", $_SESSION['username']);
+    $stmt->execute();
+
+    unset($_SESSION['promotion_message'], $_SESSION['promotion_status']);
+}
+?>
+
 
 <header class="top-header">
     <h2>WELCOME <?php echo htmlspecialchars($_SESSION['username']); ?></h2>
