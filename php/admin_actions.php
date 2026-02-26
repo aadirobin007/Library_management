@@ -18,7 +18,7 @@ $action = $_POST['action'] ?? '';
 /* ADD USER */
 if ($action === 'add') {
     $username = trim($_POST['username']);
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $password = $_POST['password'];
     $category = $_POST['category'];
 
     $stmt = $conn->prepare(
