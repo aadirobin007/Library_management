@@ -3,7 +3,7 @@ include('../db/config.php');
 
 $username = mysqli_real_escape_string($conn, $_POST['username']);
 $password = mysqli_real_escape_string($conn, $_POST['password']);
-$category     = mysqli_real_escape_string($conn, $_POST['category']);
+$category = mysqli_real_escape_string($conn, $_POST['category']);
 
 /* Check if username already exists */
 $checkUser = "SELECT * FROM users WHERE username='$username'";
@@ -14,18 +14,18 @@ if (mysqli_num_rows($result) > 0) {
     exit;
 }
 
-/* If role = Teacher, verify from faculties table */
+/* If Teacher selected, verify from faculties table */
 if ($category === "Teacher") {
 
-    $stmt = $conn->prepare("SELECT 1 FROM faculties WHERE username = ?");
-$stmt->bind_param("s", $username);
-$stmt->execute();
-$result = $stmt->get_result();
+    $stmt = $conn->prepare("SELECT id FROM faculties WHERE username = ?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $facultyResult = $stmt->get_result();
 
-if ($result->num_rows === 0) {
-    echo "<script>alert('You are not an authorized faculty');</script>";
-    exit;
-}
+    if ($facultyResult->num_rows === 0) {
+        echo "<script>alert('You are not an authorized faculty');</script>";
+        exit;
+    }
 }
 
 /* Insert user */

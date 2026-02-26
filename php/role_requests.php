@@ -19,13 +19,13 @@ if (isset($_POST['username'], $_POST['action'])) {
         $stmt->bind_param("s", $username);
         $stmt->execute();
 
-        $stmt = $conn->prepare("UPDATE role_requests SET status='accepted' WHERE username=?");
+        $stmt = $conn->prepare("UPDATE category_requests SET status='accepted' WHERE username=?");
         $stmt->bind_param("s", $username);
         $stmt->execute();
 
         $message = "Accepted $username";
     } elseif ($action === 'deny') {
-        $stmt = $conn->prepare("UPDATE role_requests SET status='denied' WHERE username=?");
+        $stmt = $conn->prepare("UPDATE category_requests SET status='denied' WHERE username=?");
         $stmt->bind_param("s", $username);
         $stmt->execute();
 
