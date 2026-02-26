@@ -1,13 +1,13 @@
 <?php
-$host = getenv("DB_HOST");
-$port = getenv("DB_PORT");
-$db   = getenv("DB_NAME");
-$user = getenv("DB_USER");
-$pass = getenv("DB_PASS");
-
-$conn = new mysqli($host, $user, $pass, $db, $port);
+$conn = new mysqli(
+    getenv("DB_HOST"),
+    getenv("DB_USER"),
+    getenv("DB_PASSWORD"),
+    getenv("DB_NAME"),
+    getenv("DB_PORT")
+);
 
 if ($conn->connect_error) {
-    die("DB Connection failed: " . $conn->connect_error);
+    die("Database connection failed: " . $conn->connect_error);
 }
 ?>
