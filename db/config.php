@@ -1,13 +1,13 @@
 <?php
-$conn = mysqli_connect(
-    getenv("DB_HOST"),
-    getenv("DB_USER"),
-    getenv("DB_PASSWORD"),
-    getenv("DB_NAME"),
-    getenv("DB_PORT")
-);
+$host = "switchyard.proxy.rlwy.net";
+$port = 11071;
+$user = "root";
+$pass = "ArbOFnCtxHMGgjPjumlwxoPJplCazMJg";
+$db   = "railway";
 
-if (!$conn) {
-    die("Database connection failed: " . mysqli_connect_error());
+$conn = new mysqli($host, $user, $pass, $db, $port);
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 ?>
